@@ -7,8 +7,8 @@ output:
       toc_depth: 3  # up to three depths of headings (specified by #, ## and ###)
       fig_caption: true
       highlight: tango  # specifies the syntax highlighting style
-#      number_sections: true  ## if you want number sections at each table header
-#      theme: united 
+      number_sections: true  ## if you want number sections at each table header
+      theme: spacelab
 ---
 
 This tutorial is inspired by this question [here](https://stackoverflow.com/questions/40398091/how-to-do-a-partial-expand-in-snakemake).
@@ -72,6 +72,11 @@ Another way to write is as following:
 expand("text_{letter}_{num}.txt", num=NUMS, allow_missing=True)
 ```
 This will also produce the same result.
+
+```{r echo=FALSE}
+xfun::embed_file('partial_expand/partial_2lists.smk', text = 'Download snakefile')
+```
+
 
 ## Expand further 
 
