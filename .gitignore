@@ -1,1 +1,8 @@
+
+
+# snakemake folder
 .snakemake/*
+# Testing code folder
+playground/*
+.DS_Store
+docs/.Rhistory
