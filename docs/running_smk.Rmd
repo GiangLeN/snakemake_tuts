@@ -1,0 +1,17 @@
+---
+title: "Snakemake running tutorial"
+output:
+   html_document:
+      toc: true # table of content true
+      toc_float: true
+      toc_depth: 3  # up to three depths of headings (specified by #, ## and ###)
+      fig_caption: true
+      highlight: tango  # specifies the syntax highlighting style
+      number_sections: true  ## if you want number sections at each table header
+      theme: spacelab
+---
+
+This tutorial is inspired by this question [here]().
+
+In this tutorial I will be covering how to run certain rules and commands.
+

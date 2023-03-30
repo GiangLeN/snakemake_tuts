@@ -1,16 +1,3 @@
----
-title: "Snakemake tutorials"
-output:
-   html_document:
-      toc: true # table of content true
-      toc_float: true
-      toc_depth: 3  # up to three depths of headings (specified by #, ## and ###)
-      fig_caption: true
-      highlight: tango  # specifies the syntax highlighting style
-      number_sections: true  ## if you want number sections at each table header
-      theme: spacelab
----
-
 This is the place where I research, explore on how to use Snakemake.
 Most of the time its from stackoverflow or some problems that I need to solve.
 

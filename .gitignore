@@ -1,5 +1,6 @@
 
 
+.Rhistory
 # snakemake folder
 .snakemake/*
 # Testing code folder
