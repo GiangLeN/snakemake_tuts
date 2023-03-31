@@ -9,6 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Giang Le" />
 
 
 <title>Snakemake expand tutorial</title>
@@ -1479,6 +1480,8 @@ border-radius: 0px;
 
 
 <h1 class="title toc-ignore">Snakemake expand tutorial</h1>
+<h4 class="author">Giang Le</h4>
+<h4 class="date">31-03-2023</h4>
 
 </div>
 
@@ -1512,13 +1515,14 @@ rule combine_text:
         &quot;&quot;&quot;
         cat {input} &gt; {output}
         &quot;&quot;&quot;</code></pre>
-<p>In this case, both files called <em>combined_A.txt</em> and
-<em>combined_B.txt</em> are generated. For the
-<code>rule combine_text</code>, Snakemake ran the command below
-twice</p>
-<pre><code>cat text_A_1.txt, text_A_2.txt, text_B_1.txt, text_B_2.txt &gt; combined_{letter}.txt</code></pre>
-<p>The content of <em>combined_A.txt</em> and <em>combined_B.txt</em>
-are the same.</p>
+<p>We are asking <em>Snakemake</em> to create the input files:
+<em>text_A_1.txt</em>, <em>text_A_2.txt</em>, <em>text_B_1.txt</em> and
+<em>text_B_2.txt</em> using the rule <code>generate_text</code>. After
+that we want to group the same <strong><em>letters</em></strong> with
+different <strong><em>numbers</em></strong> into the correspond file
+<strong><em>combined_{letter}.txt</em></strong>.</p>
+<p>Both files <em>combined_A.txt</em> and <em>combined_B.txt</em> are
+created. However they have the same content.</p>
 <pre><code>cat combined_A.txt</code></pre>
 <pre><code>A 1
 A 2
@@ -1529,12 +1533,16 @@ B 2</code></pre>
 A 2
 B 1
 B 2</code></pre>
+<p>In this case, the <code>expand()</code> function creates all the
+possible combinations from both lists. For the
+<code>rule combine_text</code>, Snakemake ran the command below
+twice:</p>
+<pre><code>cat text_A_1.txt, text_A_2.txt, text_B_1.txt, text_B_2.txt &gt; combined_{letter}.txt</code></pre>
 </div>
 <div id="partial-expand" class="section level2" number="0.2">
 <h2><span class="header-section-number">0.2</span> Partial expand</h2>
-<p>The main aim is to use expand to group
-<strong><em>numbers</em></strong> into the corresponding
-<strong><em>letters</em></strong>.</p>
+<p>Our aim is still the same, which is group all files with similar
+<strong><em>letters</em></strong> together.</p>
 <p>Update <code>rule combine_text</code> as follow:</p>
 <pre><code>rule combine_text:
     input:
@@ -1546,9 +1554,11 @@ B 2</code></pre>
         cat {input} &gt; {output}
         &quot;&quot;&quot;</code></pre>
 <a href="data:application/octet-stream;base64,TEVUVEVSUyA9IFsiQSIsICJCIl0KTlVNUyA9IFsiMSIsICIyIl0KCnJ1bGUgYWxsOgogICAgaW5wdXQ6CiAgICAgICAgZXhwYW5kKCJjb21iaW5lZF97bGV0dGVyfS50eHQiLCBsZXR0ZXI9TEVUVEVSUykKCnJ1bGUgZ2VuZXJhdGVfdGV4dDoKICAgIG91dHB1dDoKICAgICAgICAidGV4dF97bGV0dGVyfV97bnVtfS50eHQiCiAgICBzaGVsbDoKICAgICAgICAiIiIKICAgICAgICBlY2hvICJ7d2lsZGNhcmRzLmxldHRlcn0iICJ7d2lsZGNhcmRzLm51bX0iID4ge291dHB1dH0KICAgICAgICAiIiIKCnJ1bGUgY29tYmluZSB0ZXh0OgogICAgaW5wdXQ6CiAgICAgICAgI2V4cGFuZCgidGV4dF97bGV0dGVyfV97bnVtfS50eHQiLCBudW09TlVNUywgYWxsb3dfbWlzc2luZz1UcnVlKQogICAgICAgIGV4cGFuZCgidGV4dF97e2xldHRlcn19X3tudW19LnR4dCIsIG51bT1OVU1TKQogICAgb3V0cHV0OgogICAgICAgICJjb21iaW5lZF97bGV0dGVyfS50eHQiCiAgICBzaGVsbDoKICAgICAgICAiIiIKICAgICAgICBjYXQge2lucHV0fSA+IHtvdXRwdXR9CiAgICAgICAgIiIiCg==" download="partial_2lists.smk">Download snakefile</a>
-<p>Here we use double bracket for non-expanded wildcard. The files
-<em>combined_A.txt</em> and <em>combine_B.txt</em> are no longer the
-same.</p>
+<p>Here we use double bracket for non-expanded wildcard. With partial
+expand the <code>rule combine_text</code> became</p>
+<pre><code>cat text_{letter}_1.txt text_{letter}_2.txt &gt; combined_{letter}.txt</code></pre>
+<p>The files <em>combined_A.txt</em> and <em>combine_B.txt</em> are no
+longer the same.</p>
 <pre><code>cat combined_A.txt</code></pre>
 <pre><code>A 1
 A 2</code></pre>
@@ -1562,7 +1572,9 @@ B 2</code></pre>
 </div>
 <div id="expand-further" class="section level2" number="0.3">
 <h2><span class="header-section-number">0.3</span> Expand further</h2>
-<p>Lets add the third variable <strong><em>samples</em></strong>.</p>
+<p>Lets add the third variable <strong><em>samples</em></strong>. Our
+aim is to group the same <strong><em>samples</em></strong> and
+<strong><em>letters</em></strong> together.</p>
 <pre><code>LETTERS = [&quot;A&quot;, &quot;B&quot;]
 NUMS = [&quot;1&quot;, &quot;2&quot;]
 SAMPLES = [&quot;S1&quot;,&quot;S2&quot;]
@@ -1594,9 +1606,10 @@ rule combine_text:
 <p>The <code>wildcard_constraints</code> is added to specify that the
 letter can only come from the list LETTERS. Without the constraint,
 Snakemake will fail caused by <em>AmbigousRuleException</em>.</p>
-<p>In this case <em>numbers</em> are grouped into <em>sample</em> and
-<em>letter</em>. Four files are generated <em>S1_A.txt</em>,
-<em>S1_B.txt</em>, <em>S2_A.txt</em> and <em>S2_B.txt</em>.</p>
+<p>In this case <strong><em>numbers</em></strong> are grouped into
+<strong><em>sample</em></strong> and <strong><em>letter</em></strong>.
+Four final files are generated <em>S1_A.txt</em>, <em>S1_B.txt</em>,
+<em>S2_A.txt</em> and <em>S2_B.txt</em>.</p>
 <pre><code>cat S1_A.txt</code></pre>
 <pre><code>S1 A 1
 S2 A 2</code></pre>
@@ -1608,8 +1621,9 @@ S2 B 2</code></pre>
 <h2><span class="header-section-number">0.4</span> Combine to samples (2
 steps)</h2>
 <p>Lets go one step further and generate a rule to combine all under
-<em>samples</em>. We need to update <code>wildcard_constraints</code>
-and move it to global.</p>
+<strong><em>samples</em></strong>. We need to update
+<code>wildcard_constraints</code> and move it to global. This will
+impact all rules.</p>
 <pre><code>LETTERS = [&quot;A&quot;, &quot;B&quot;]
 NUMS = [&quot;1&quot;, &quot;2&quot;]
 SAMPLES = [&quot;S1&quot;,&quot;S2&quot;]
@@ -1662,11 +1676,12 @@ S1 B 2</code></pre>
 S2 A 2
 S2 B 1
 S2 B 2</code></pre>
-<p>The <em>letters</em> and <em>numbers</em> are grouped into the
-correct <em>samples</em>.</p>
+<p>The <strong><em>letters</em></strong> and
+<strong><em>numbers</em></strong> are grouped into the correct
+<strong><em>samples</em></strong>.</p>
 </div>
-<div id="combine-to-sample-1-step" class="section level2" number="0.5">
-<h2><span class="header-section-number">0.5</span> Combine to sample (1
+<div id="combine-to-samples-1-step" class="section level2" number="0.5">
+<h2><span class="header-section-number">0.5</span> Combine to samples (1
 step)</h2>
 <p>Same as above but in 1 step:</p>
 <pre><code>LETTERS = [&quot;A&quot;, &quot;B&quot;]

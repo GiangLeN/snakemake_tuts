@@ -1,5 +1,8 @@
 ---
 title: "Snakemake expand tutorial"
+author: "Giang Le"
+date: "`r format(Sys.Date(), '%d-%m-%Y')`"
+version: 0.1.2
 output:
    html_document:
       toc: true # table of content true
@@ -44,14 +47,11 @@ rule combine_text:
         """
 ```
 
-In this case, both files called *combined_A.txt* and *combined_B.txt* are generated.
-For the `rule combine_text`, Snakemake ran the command below twice
+We are asking *Snakemake* to create the input files: *text_A_1.txt*, *text_A_2.txt*, *text_B_1.txt* and *text_B_2.txt* using the rule `generate_text`.
+After that we want to group the same ***letters*** with different ***numbers*** into the correspond file ***combined_{letter}.txt***.
 
-```
-cat text_A_1.txt, text_A_2.txt, text_B_1.txt, text_B_2.txt > combined_{letter}.txt
-```
-
-The content of *combined_A.txt* and *combined_B.txt* are the same.
+Both files *combined_A.txt* and *combined_B.txt* are created.
+However they have the same content.
 
 ```
 cat combined_A.txt
@@ -75,12 +75,16 @@ B 1
 B 2
 ```
 
+In this case, the `expand()` function creates all the possible combinations from both lists.
+For the `rule combine_text`, Snakemake ran the command below twice:
 
+```
+cat text_A_1.txt, text_A_2.txt, text_B_1.txt, text_B_2.txt > combined_{letter}.txt
+```
 
 ## Partial expand
 
-The main aim is to use expand to group ***numbers*** into the corresponding ***letters***. 
-
+Our aim is still the same, which is group all files with similar ***letters*** together.
 
 Update `rule combine_text` as follow:
 
@@ -101,6 +105,12 @@ xfun::embed_file('partial_expand_smk/partial_2lists.smk', text = 'Download snake
 ```
 
 Here we use double bracket for non-expanded wildcard.
+With partial expand the `rule combine_text` became
+
+```
+cat text_{letter}_1.txt text_{letter}_2.txt > combined_{letter}.txt
+```
+
 The files *combined_A.txt* and *combine_B.txt* are no longer the same.
 
 ```
@@ -131,6 +141,7 @@ This will also produce the same result.
 ## Expand further 
 
 Lets add the third variable ***samples***.
+Our aim is to group the same ***samples*** and ***letters*** together.
 
 ```
 LETTERS = ["A", "B"]
@@ -170,8 +181,8 @@ The `wildcard_constraints` is added to specify that the letter can only come fro
 Without the constraint, Snakemake will fail caused by *AmbigousRuleException*.
 
 
-In this case *numbers* are grouped into *sample* and *letter*.
-Four files are generated *S1_A.txt*, *S1_B.txt*, *S2_A.txt* and *S2_B.txt*.
+In this case ***numbers*** are grouped into ***sample*** and ***letter***.
+Four final files are generated *S1_A.txt*, *S1_B.txt*, *S2_A.txt* and *S2_B.txt*.
 
 ```
 cat S1_A.txt
@@ -193,8 +204,9 @@ S2 B 2
 
 ## Combine to samples (2 steps) 
 
-Lets go one step further and generate a rule to combine all under *samples*.
+Lets go one step further and generate a rule to combine all under ***samples***.
 We need to update `wildcard_constraints` and move it to global.
+This will impact all rules.
 
 ```
 LETTERS = ["A", "B"]
@@ -268,10 +280,10 @@ S2 B 1
 S2 B 2
 ```
 
-The *letters* and *numbers* are grouped into the correct *samples*.
+The ***letters*** and ***numbers*** are grouped into the correct ***samples***.
 
 
-## Combine to sample (1 step)
+## Combine to samples (1 step)
 
 Same as above but in 1 step:
 

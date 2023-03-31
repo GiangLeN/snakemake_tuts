@@ -7,7 +7,9 @@ Site can be located at:
 
 ## Tutorials
 
--   [Partial expand](docs/partial_expand.html)
+- [Partial expand](docs/partial_expand.html)
 
 ## To do
+- Run Snakemake
+- Wildcards
 
