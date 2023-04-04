@@ -9,9 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Giang Le" />
 
 
-<title>Snakemake tutorials</title>
+<title>Snakemake onstart, onsuccess and onerror handlers tutorial</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1478,25 +1479,61 @@ border-radius: 0px;
 
 
 
-<h1 class="title toc-ignore">Snakemake tutorials</h1>
+<h1 class="title toc-ignore">Snakemake onstart, onsuccess and onerror
+handlers tutorial</h1>
+<h4 class="author">Giang Le</h4>
+<h4 class="date">04-04-2023</h4>
 
 </div>
 
 
-<p>This is the place where I research, explore on how to use Snakemake.
-Most of the time its from stackoverflow or some problems that I need to
-solve.</p>
-<p>Site can be located at: <a href="https://gianglen.github.io/snakemake_tuts/">https://gianglen.github.io/snakemake_tuts/</a></p>
-<div id="tutorials" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Tutorials</h2>
-<ul>
-<li><a href="docs/partial_expand.html">Partial expand</a></li>
-<li><a href="docs/handlers.html">Handlers</a></li>
-</ul>
-</div>
-<div id="to-do" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> To do</h2>
-</div>
+<p>In this tutorial I will be covering how to use onstart to run certain
+rules and commands.</p>
+<p>These handlers are built-in functions in Snakemake.</p>
+<p><strong><em>onstart</em></strong> is executed before the workflow. It
+can be used to perform setup or initialization tasks before the rules in
+the workflow are executed.</p>
+<p><strong><em>onsuccess</em></strong> is activated when the workflow is
+finished without error.</p>
+<p><strong><em>onerror</em></strong> is as the name implied, trigger
+when Snakemake failed due to error.</p>
+<blockquote>
+<p>Note: The handlers are not triggered by dry run</p>
+</blockquote>
+<p>Here’s an example of how to use these handlers in a Snakemake
+workflow:</p>
+<pre><code>onstart:
+    print(&quot;Starting workflow...&quot;)
+    # Setup files using snakemake
+    shell(&quot;snakemake --cores 2 -s scripts/others.smk --use-conda&quot;)
+
+rule all:
+    input:
+        &quot;output/output.txt&quot;
+
+rule create_output:
+    output:
+        &quot;output/output.txt&quot;
+    shell:
+        &quot;echo &#39;Hello, world!&#39; &gt; {output}&quot;
+
+onsuccess:
+    print(&quot;Workflow finished, no error&quot;)
+
+onerror:
+    print(&quot;An error occurred&quot;)
+    shell(&quot;mail -s &quot;an error occurred&quot; youremail@provider.com &lt; {log}&quot;)</code></pre>
+<p>In this example, the onstart at the beginning of the Snakemake prints
+a message to the console indicating that the workflow is starting.
+Another snakemake script is activated. This script could be used to
+setup for the main script.</p>
+<p>The workflow rules are defined. There are two rules in this example:
+rule all and rule create_output. The rule all specifies that the final
+output of the workflow is the file output/output.txt. The rule
+create_output generates this file by running a shell command that writes
+the text “Hello, world!” to the file.</p>
+<p>Once the workflow is completed it then print another method “Workflow
+finished, no error”.</p>
 
 
 

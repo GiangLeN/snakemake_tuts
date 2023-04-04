@@ -21,6 +21,7 @@ Site can be located at:
 ## Tutorials
 
 -   [Partial expand](docs/partial_expand.html)
+-   [Handlers](docs/handlers.html)
 
 ## To do
 

@@ -1,0 +1,68 @@
+---
+title: "Snakemake onstart, onsuccess and onerror handlers tutorial"
+author: "Giang Le"
+date: "`r format(Sys.Date(), '%d-%m-%Y')`"
+version: 0.1.2
+output:
+   html_document:
+      toc: true # table of content true
+      toc_float: true
+      toc_depth: 3  # up to three depths of headings (specified by #, ## and ###)
+      fig_caption: true
+      highlight: tango  # specifies the syntax highlighting style
+      number_sections: true  ## if you want number sections at each table header
+      theme: spacelab
+---
+
+In this tutorial I will be covering how to use onstart to run certain rules and commands.
+
+These handlers are built-in functions in Snakemake.
+
+***onstart*** is executed before the workflow.
+It can be used to perform setup or initialization tasks before the rules in the workflow are executed.
+
+***onsuccess*** is activated when the workflow is finished without error.
+
+***onerror*** is as the name implied, trigger when Snakemake failed due to error.
+
+> Note: The handlers are not triggered by dry run
+
+Here's an example of how to use these handlers in a Snakemake workflow:
+
+```
+onstart:
+    print("Starting workflow...")
+    # Setup files using snakemake
+    shell("snakemake --cores 2 -s scripts/others.smk --use-conda")
+
+rule all:
+    input:
+        "output/output.txt"
+
+rule create_output:
+    output:
+        "output/output.txt"
+    shell:
+        "echo 'Hello, world!' > {output}"
+
+onsuccess:
+    print("Workflow finished, no error")
+
+onerror:
+    print("An error occurred")
+    shell("mail -s "an error occurred" youremail@provider.com < {log}")
+```
+
+In this example, the onstart at the beginning of the Snakemake prints a message to the console indicating that the workflow is starting.
+Another snakemake script is activated.
+This script could be used to setup for the main script.
+
+The workflow rules are defined.
+There are two rules in this example: rule all and rule create_output.
+The rule all specifies that the final output of the workflow is the file output/output.txt.
+The rule create_output generates this file by running a shell command that writes the text "Hello, world!" to the file.
+
+Once the workflow is completed it then print another method "Workflow finished, no error".
+
+
+

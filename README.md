@@ -7,9 +7,10 @@ Site can be located at:
 
 ## Tutorials
 
-- [Partial expand](docs/partial_expand.html)
+- [Partial expand](https://gianglen.github.io/snakemake_tuts/docs/partial_expand.html)
+- [Handlers](https://gianglen.github.io/snakemake_tuts/docs/handlers.html)
 
 ## To do
 - Run Snakemake
 - Wildcards
-- onstart
+
