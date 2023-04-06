@@ -1,5 +1,5 @@
 ---
-title: "Snakemake onstart, onsuccess and onerror handlers tutorial"
+title: "Snakemake handlers tutorial"
 author: "Giang Le"
 date: "`r format(Sys.Date(), '%d-%m-%Y')`"
 version: 0.1.2
@@ -14,9 +14,8 @@ output:
       theme: spacelab
 ---
 
-In this tutorial I will be covering how to use onstart to run certain rules and commands.
 
-These handlers are built-in functions in Snakemake.
+The handlers are built-in functions in Snakemake.
 
 ***onstart*** is executed before the workflow.
 It can be used to perform setup or initialization tasks before the rules in the workflow are executed.
@@ -65,4 +64,5 @@ The rule create_output generates this file by running a shell command that write
 Once the workflow is completed it then print another method "Workflow finished, no error".
 
 
+[Return to main page](https://gianglen.github.io/snakemake_tuts/)
 

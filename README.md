@@ -13,4 +13,7 @@ Site can be located at:
 ## To do
 - Run Snakemake
 - Wildcards
+- Link to main page
 
+
+![](https://komarev.com/ghpvc/?username=GiangLeN&color=green)

@@ -12,7 +12,7 @@
 <meta name="author" content="Giang Le" />
 
 
-<title>Snakemake onstart, onsuccess and onerror handlers tutorial</title>
+<title>Snakemake handlers tutorial</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1479,17 +1479,14 @@ border-radius: 0px;
 
 
 
-<h1 class="title toc-ignore">Snakemake onstart, onsuccess and onerror
-handlers tutorial</h1>
+<h1 class="title toc-ignore">Snakemake handlers tutorial</h1>
 <h4 class="author">Giang Le</h4>
 <h4 class="date">04-04-2023</h4>
 
 </div>
 
 
-<p>In this tutorial I will be covering how to use onstart to run certain
-rules and commands.</p>
-<p>These handlers are built-in functions in Snakemake.</p>
+<p>The handlers are built-in functions in Snakemake.</p>
 <p><strong><em>onstart</em></strong> is executed before the workflow. It
 can be used to perform setup or initialization tasks before the rules in
 the workflow are executed.</p>
@@ -1534,6 +1531,8 @@ create_output generates this file by running a shell command that writes
 the text “Hello, world!” to the file.</p>
 <p>Once the workflow is completed it then print another method “Workflow
 finished, no error”.</p>
+<p><a href="https://gianglen.github.io/snakemake_tuts/">Return to main
+page</a></p>
 
 
 

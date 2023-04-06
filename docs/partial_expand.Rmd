@@ -322,3 +322,7 @@ rule combine_text:
 xfun::embed_file('partial_expand_smk/partial_3lists1step.smk', text = 'Download snakefile')
 ```
 
+
+
+
+[Return to main page](https://gianglen.github.io/snakemake_tuts/)
