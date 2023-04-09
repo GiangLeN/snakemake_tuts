@@ -14,6 +14,6 @@ Site can be located at:
 - Run Snakemake
 - Wildcards
 - Link to main page
+- Configs for multiple settings
 
 
-![](https://komarev.com/ghpvc/?username=GiangLeN&color=green)
