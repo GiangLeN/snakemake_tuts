@@ -1,0 +1,42 @@
+---
+title: "A million Snakemake inputs tutorial"
+author: "Giang Le"
+date: "`r format(Sys.Date(), '%d-%m-%Y')`"
+version: 0.1.2
+output:
+   html_document:
+      toc: true # table of content true
+      toc_float: true
+      toc_depth: 3  # up to three depths of headings (specified by #, ## and ###)
+      fig_caption: true
+      highlight: tango  # specifies the syntax highlighting style
+      number_sections: true  ## if you want number sections at each table header
+      theme: spacelab
+---
+
+This tutorial will show you multiple ways to specify input in Snakemake.
+
+## Hardcoded
+
+For running fix file name
+
+```
+
+
+
+
+
+
+```
+
+
+## Lists
+
+
+
+
+## Inherited
+
+
+
+## glob_wildcards
