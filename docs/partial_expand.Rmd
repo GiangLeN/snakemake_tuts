@@ -14,9 +14,11 @@ output:
       theme: spacelab
 ---
 
-This tutorial is inspired by this question [here](https://stackoverflow.com/questions/40398091/how-to-do-a-partial-expand-in-snakemake).
+## Introduction
+In this tutorial, we will use partial expansion in Snakemake to generate specific combinations of input and output files.
+This tutorial was inspired by this question [here](https://stackoverflow.com/questions/40398091/how-to-do-a-partial-expand-in-snakemake).
 
-## Expand for all combinations
+## The issue
 
 Consider the normal usage of `expand()` function,
 
@@ -48,7 +50,7 @@ rule combine_text:
 ```
 
 We are asking *Snakemake* to create the input files: *text_A_1.txt*, *text_A_2.txt*, *text_B_1.txt* and *text_B_2.txt* using the rule `generate_text`.
-After that we want to group the same ***letters*** with different ***numbers*** into the correspond file ***combined_{letter}.txt***.
+After that we want to group the same ***letters*** with different ***numbers*** into the correspond file called ***combined_{letter}.txt***.
 
 Both files *combined_A.txt* and *combined_B.txt* are created.
 However they have the same content.
@@ -76,7 +78,7 @@ B 2
 ```
 
 In this case, the `expand()` function creates all the possible combinations from both lists.
-For the `rule combine_text`, Snakemake ran the command below twice:
+For the rule `combine_text`, Snakemake ran the command below twice:
 
 ```
 cat text_A_1.txt, text_A_2.txt, text_B_1.txt, text_B_2.txt > combined_{letter}.txt
@@ -84,9 +86,9 @@ cat text_A_1.txt, text_A_2.txt, text_B_1.txt, text_B_2.txt > combined_{letter}.t
 
 ## Partial expand
 
-Our aim is still the same, which is group all files with similar ***letters*** together.
+Our aim is still the same, which is to group all files with similar ***letters*** together.
 
-Update `rule combine_text` as follow:
+Update rule `combine_text` as follow:
 
 ```
 rule combine_text:
@@ -105,7 +107,7 @@ xfun::embed_file('partial_expand_smk/partial_2lists.smk', text = 'Download snake
 ```
 
 Here we use double bracket for non-expanded wildcard.
-With partial expand the `rule combine_text` became
+With partial expand the rule `combine_text` triggers
 
 ```
 cat text_{letter}_1.txt text_{letter}_2.txt > combined_{letter}.txt
@@ -202,7 +204,7 @@ S2 B 1
 S2 B 2
 ```
 
-## Combine to samples (2 steps) 
+### Combine to samples (2 steps) 
 
 Lets go one step further and generate a rule to combine all under ***samples***.
 We need to update `wildcard_constraints` and move it to global.
@@ -283,7 +285,7 @@ S2 B 2
 The ***letters*** and ***numbers*** are grouped into the correct ***samples***.
 
 
-## Combine to samples (1 step)
+### Combine to samples (1 step)
 
 Same as above but in 1 step:
 
@@ -323,6 +325,9 @@ xfun::embed_file('partial_expand_smk/partial_3lists1step.smk', text = 'Download 
 ```
 
 
-
+## Conclusion
+Partial expansion in Snakemake allows us to selectively expand only a subset of variables in a template string, thus generating a subset of input or output files.
+We can use curly braces to enclose the variables we want to expand, and double curly braces to leave the remaining variables as-is.
+This technique is useful when we only need a specific set of files, rather than all possible combinations.
 
 [Return to main page](https://gianglen.github.io/snakemake_tuts/)

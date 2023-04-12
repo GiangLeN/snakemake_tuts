@@ -1481,15 +1481,19 @@ border-radius: 0px;
 
 <h1 class="title toc-ignore">Snakemake expand tutorial</h1>
 <h4 class="author">Giang Le</h4>
-<h4 class="date">04-04-2023</h4>
+<h4 class="date">13-04-2023</h4>
 
 </div>
 
 
-<p>This tutorial is inspired by this question <a href="https://stackoverflow.com/questions/40398091/how-to-do-a-partial-expand-in-snakemake">here</a>.</p>
-<div id="expand-for-all-combinations" class="section level2" number="0.1">
-<h2><span class="header-section-number">0.1</span> Expand for all
-combinations</h2>
+<div id="introduction" class="section level2" number="0.1">
+<h2><span class="header-section-number">0.1</span> Introduction</h2>
+<p>In this tutorial, we will use partial expansion in Snakemake to
+generate specific combinations of input and output files. This tutorial
+was inspired by this question <a href="https://stackoverflow.com/questions/40398091/how-to-do-a-partial-expand-in-snakemake">here</a>.</p>
+</div>
+<div id="the-issue" class="section level2" number="0.2">
+<h2><span class="header-section-number">0.2</span> The issue</h2>
 <p>Consider the normal usage of <code>expand()</code> function,</p>
 <pre><code>LETTERS = [&quot;A&quot;, &quot;B&quot;]
 NUMS = [&quot;1&quot;, &quot;2&quot;]
@@ -1520,7 +1524,7 @@ rule combine_text:
 <em>text_B_2.txt</em> using the rule <code>generate_text</code>. After
 that we want to group the same <strong><em>letters</em></strong> with
 different <strong><em>numbers</em></strong> into the correspond file
-<strong><em>combined_{letter}.txt</em></strong>.</p>
+called <strong><em>combined_{letter}.txt</em></strong>.</p>
 <p>Both files <em>combined_A.txt</em> and <em>combined_B.txt</em> are
 created. However they have the same content.</p>
 <pre><code>cat combined_A.txt</code></pre>
@@ -1534,16 +1538,15 @@ A 2
 B 1
 B 2</code></pre>
 <p>In this case, the <code>expand()</code> function creates all the
-possible combinations from both lists. For the
-<code>rule combine_text</code>, Snakemake ran the command below
-twice:</p>
+possible combinations from both lists. For the rule
+<code>combine_text</code>, Snakemake ran the command below twice:</p>
 <pre><code>cat text_A_1.txt, text_A_2.txt, text_B_1.txt, text_B_2.txt &gt; combined_{letter}.txt</code></pre>
 </div>
-<div id="partial-expand" class="section level2" number="0.2">
-<h2><span class="header-section-number">0.2</span> Partial expand</h2>
-<p>Our aim is still the same, which is group all files with similar
+<div id="partial-expand" class="section level2" number="0.3">
+<h2><span class="header-section-number">0.3</span> Partial expand</h2>
+<p>Our aim is still the same, which is to group all files with similar
 <strong><em>letters</em></strong> together.</p>
-<p>Update <code>rule combine_text</code> as follow:</p>
+<p>Update rule <code>combine_text</code> as follow:</p>
 <pre><code>rule combine_text:
     input:
         expand(&quot;text_{{letter}}_{num}.txt&quot;, num=NUMS)
@@ -1555,7 +1558,7 @@ twice:</p>
         &quot;&quot;&quot;</code></pre>
 <a href="data:application/octet-stream;base64,TEVUVEVSUyA9IFsiQSIsICJCIl0KTlVNUyA9IFsiMSIsICIyIl0KCnJ1bGUgYWxsOgogICAgaW5wdXQ6CiAgICAgICAgZXhwYW5kKCJjb21iaW5lZF97bGV0dGVyfS50eHQiLCBsZXR0ZXI9TEVUVEVSUykKCnJ1bGUgZ2VuZXJhdGVfdGV4dDoKICAgIG91dHB1dDoKICAgICAgICAidGV4dF97bGV0dGVyfV97bnVtfS50eHQiCiAgICBzaGVsbDoKICAgICAgICAiIiIKICAgICAgICBlY2hvICJ7d2lsZGNhcmRzLmxldHRlcn0iICJ7d2lsZGNhcmRzLm51bX0iID4ge291dHB1dH0KICAgICAgICAiIiIKCnJ1bGUgY29tYmluZSB0ZXh0OgogICAgaW5wdXQ6CiAgICAgICAgI2V4cGFuZCgidGV4dF97bGV0dGVyfV97bnVtfS50eHQiLCBudW09TlVNUywgYWxsb3dfbWlzc2luZz1UcnVlKQogICAgICAgIGV4cGFuZCgidGV4dF97e2xldHRlcn19X3tudW19LnR4dCIsIG51bT1OVU1TKQogICAgb3V0cHV0OgogICAgICAgICJjb21iaW5lZF97bGV0dGVyfS50eHQiCiAgICBzaGVsbDoKICAgICAgICAiIiIKICAgICAgICBjYXQge2lucHV0fSA+IHtvdXRwdXR9CiAgICAgICAgIiIiCg==" download="partial_2lists.smk">Download snakefile</a>
 <p>Here we use double bracket for non-expanded wildcard. With partial
-expand the <code>rule combine_text</code> became</p>
+expand the rule <code>combine_text</code> triggers</p>
 <pre><code>cat text_{letter}_1.txt text_{letter}_2.txt &gt; combined_{letter}.txt</code></pre>
 <p>The files <em>combined_A.txt</em> and <em>combine_B.txt</em> are no
 longer the same.</p>
@@ -1570,8 +1573,8 @@ B 2</code></pre>
 <pre><code>expand(&quot;text_{letter}_{num}.txt&quot;, num=NUMS, allow_missing=True)</code></pre>
 <p>This will also produce the same result.</p>
 </div>
-<div id="expand-further" class="section level2" number="0.3">
-<h2><span class="header-section-number">0.3</span> Expand further</h2>
+<div id="expand-further" class="section level2" number="0.4">
+<h2><span class="header-section-number">0.4</span> Expand further</h2>
 <p>Lets add the third variable <strong><em>samples</em></strong>. Our
 aim is to group the same <strong><em>samples</em></strong> and
 <strong><em>letters</em></strong> together.</p>
@@ -1616,10 +1619,9 @@ S2 A 2</code></pre>
 <pre><code>cat S2_B.txt </code></pre>
 <pre><code>S2 B 1
 S2 B 2</code></pre>
-</div>
-<div id="combine-to-samples-2-steps" class="section level2" number="0.4">
-<h2><span class="header-section-number">0.4</span> Combine to samples (2
-steps)</h2>
+<div id="combine-to-samples-2-steps" class="section level3" number="0.4.1">
+<h3><span class="header-section-number">0.4.1</span> Combine to samples
+(2 steps)</h3>
 <p>Lets go one step further and generate a rule to combine all under
 <strong><em>samples</em></strong>. We need to update
 <code>wildcard_constraints</code> and move it to global. This will
@@ -1680,9 +1682,9 @@ S2 B 2</code></pre>
 <strong><em>numbers</em></strong> are grouped into the correct
 <strong><em>samples</em></strong>.</p>
 </div>
-<div id="combine-to-samples-1-step" class="section level2" number="0.5">
-<h2><span class="header-section-number">0.5</span> Combine to samples (1
-step)</h2>
+<div id="combine-to-samples-1-step" class="section level3" number="0.4.2">
+<h3><span class="header-section-number">0.4.2</span> Combine to samples
+(1 step)</h3>
 <p>Same as above but in 1 step:</p>
 <pre><code>LETTERS = [&quot;A&quot;, &quot;B&quot;]
 NUMS = [&quot;1&quot;, &quot;2&quot;]
@@ -1713,6 +1715,16 @@ rule combine_text:
         cat {input} &gt; {output}
         &quot;&quot;&quot;</code></pre>
 <a href="data:application/octet-stream;base64,TEVUVEVSUyA9IFsiQSIsICJCIl0KTlVNUyA9IFsiMSIsICIyIl0KU0FNUExFUyA9IFsiUzEiLCJTMiJdCgp3aWxkY2FyZF9jb25zdHJhaW50czoKICAgIHNhbXBsZT0ifCIuam9pbihTQU1QTEVTKQoKcnVsZSBhbGw6CiAgICBpbnB1dDoKICAgICAgICBleHBhbmQoIntzYW1wbGV9LnR4dCIsIHNhbXBsZSA9IFNBTVBMRVMpCgpydWxlIGdlbmVyYXRlX3RleHQ6CiAgICBvdXRwdXQ6CiAgICAgICAgIntzYW1wbGV9X3tsZXR0ZXJ9X3tudW19LnR4dCIKICAgIHNoZWxsOgogICAgICAgICIiIgogICAgICAgIGVjaG8ge3dpbGRjYXJkcy5zYW1wbGV9IHt3aWxkY2FyZHMubGV0dGVyfSB7d2lsZGNhcmRzLm51bX0gPiB7b3V0cHV0fQogICAgICAgICIiIgoKcnVsZSBjb21iaW5lX3RleHQ6CiAgICBpbnB1dDoKICAgICAgICBleHBhbmQoInt7c2FtcGxlfX1fe2xldHRlcn1fe251bX0udHh0IiwgbGV0dGVyPUxFVFRFUlMsIG51bT1OVU1TKQogICAgb3V0cHV0OgogICAgICAgICJ7c2FtcGxlfS50eHQiCiAgICBtZXNzYWdlOgogICAgICAgICJNZXJnZSB1c2luZyBzaW5nbGUgcnVsZSIKICAgIHNoZWxsOgogICAgICAgICIiIgogICAgICAgIGNhdCB7aW5wdXR9ID4ge291dHB1dH0KICAgICAgICAiIiIK" download="partial_3lists1step.smk">Download snakefile</a>
+</div>
+</div>
+<div id="conclusion" class="section level2" number="0.5">
+<h2><span class="header-section-number">0.5</span> Conclusion</h2>
+<p>Partial expansion in Snakemake allows us to selectively expand only a
+subset of variables in a template string, thus generating a subset of
+input or output files. We can use curly braces to enclose the variables
+we want to expand, and double curly braces to leave the remaining
+variables as-is. This technique is useful when we only need a specific
+set of files, rather than all possible combinations.</p>
 <p><a href="https://gianglen.github.io/snakemake_tuts/">Return to main
 page</a></p>
 </div>

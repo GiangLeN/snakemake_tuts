@@ -1,5 +1,5 @@
 ---
-title: "A million Snakemake inputs tutorial"
+title: "A million ways to write Snakemake inputs"
 author: "Giang Le"
 date: "`r format(Sys.Date(), '%d-%m-%Y')`"
 version: 0.1.2
@@ -18,25 +18,75 @@ This tutorial will show you multiple ways to specify input in Snakemake.
 
 ## Hardcoded
 
-For running fix file name
+This approach is for running specific file name.
+Create a blank file `haha.txt`
 
 ```
-
-
-
-
-
-
+touch haha.txt
 ```
 
+Snakefile:
+
+```
+rule fix_name;
+    input:
+        "haha.txt"
+    output:
+        "hehe.txt"
+    shell:
+        """
+        echo {input} > {output}
+        """
+```
 
 ## Lists
 
+using the 2 files from above, we modify the Snakefile.
 
+```
+laughs = ["haha","hehe"]
 
+rule fin:
+    input:
+        expand("{laugh}_out_loud", laugh = laughs)
+
+rule list_name:
+    input:
+        "{laugh}.txt"
+    output:
+        touch("{laugh}_out_loud")
+```    
+
+List can be passed as input for snakemake.
+Need to have a rule, which specify the final output.
 
 ## Inherited
 
+```
+laughs = ["haha","hehe"]
 
+rule fin:
+    input:
+        expand("{laugh}_enough", laugh = laughs)
+
+rule list_name:
+    input:
+        "{laugh}.txt"
+    output:
+        touch("{laugh}_out_loud")
+
+rule inherited_names:
+    input:
+        list_names.output
+    output:
+        touch("{laugh}_enough")
+
+```
 
 ## glob_wildcards
+
+
+This method could detect wildcards based on the input files.
+
+### Basic
+
